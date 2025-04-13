@@ -1,0 +1,48 @@
+﻿@using Model
+@model RequestPerson
+<form asp-controller="Rookies" asp-action="CreatePerson">
+    <div class="mb-3">
+        <label asp-for="FirstName" class="form-label">First name</label>
+        <input asp-for="FirstName" type="text" class="form-control">
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="LastName" class="form-label">Last name</label>
+        <input asp-for="LastName" type="text" class="form-control">
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <select asp-for="Gender" class="form-select" aria-label="Default select example">
+        @foreach (var gender in Enum.GetValues(typeof(GenderType)))
+        {
+            <option value=@gender>@gender</option>
+        }
+    </select>
+    <span asp-validation-for="Gender" class="text-danger"></span>
+    <div class="mb-3">
+        <label asp-for="Birthday" class="form-label">Date of birth</label>
+        <input asp-for="Birthday" type="date" class="form-control">
+        <span asp-validation-for="Birthday" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PhoneNumber" class="form-label">Phone number</label>
+        <input asp-for="PhoneNumber" type="tel" class="form-control">
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="BirthPlace" class="form-label">Birth place</label>
+        <input asp-for="BirthPlace" type="text" class="form-control">
+        <span asp-validation-for="BirthPlace" class="text-danger"></span>
+    </div>
+    <div class="form-check">
+        <input asp-for="IsGraduated" class="form-check-input" type="checkbox">
+        <label asp-for="IsGraduated" class="form-check-label">
+            Graduated
+        </label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

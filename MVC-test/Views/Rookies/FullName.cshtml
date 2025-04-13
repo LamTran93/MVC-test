@@ -1,0 +1,35 @@
+﻿@using Model
+@model IEnumerable<ResponsePerson>
+
+<h1>Members with full name</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Full Name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Birthday</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Birth Place</th>
+            <th scope="col">Graduated</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@Html.DisplayFor(modelItem => item.LastName) @Html.DisplayFor(modelItem => item.FirstName)</th>
+                <td>@Html.DisplayFor(modelItem => item.Gender)</td>
+                <td>@Html.DisplayFor(modelItem => item.Birthday)</td>
+                <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.BirthPlace)</td>
+                <td>@Html.DisplayFor(modelItem => item.IsGraduated)</td>
+            </tr>
+        }
+        @if (Model.Count() == 0)
+        {
+            <tr>
+                <th>No member in list</th>
+            </tr>
+        }
+    </tbody>
+</table>

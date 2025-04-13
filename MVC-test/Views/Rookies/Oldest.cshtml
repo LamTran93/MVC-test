@@ -1,0 +1,37 @@
+﻿@using Model
+@model ResponsePerson
+
+<h1>Oldest Member</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Birthday</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Birth Place</th>
+            <th scope="col">Graduated</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            <tr>
+                <th scope="row">@Html.DisplayFor(item => item.FirstName)</th>
+                <td>@Html.DisplayFor(item => item.LastName)</td>
+                <td>@Html.DisplayFor(item => item.Gender)</td>
+                <td>@Html.DisplayFor(item => item.Birthday)</td>
+                <td>@Html.DisplayFor(item => item.PhoneNumber)</td>
+                <td>@Html.DisplayFor(item => item.BirthPlace)</td>
+                <td>@Html.DisplayFor(item => item.IsGraduated)</td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <th>No member in list</th>
+            </tr>
+        }
+    </tbody>
+</table>

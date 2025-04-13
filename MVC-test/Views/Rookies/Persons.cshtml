@@ -1,0 +1,58 @@
+﻿@using Model
+@model IEnumerable<ResponsePerson>
+
+<h1>@ViewData["Title"]</h1>
+@if (ViewData["Title"] != null && ViewData["Title"].Equals("Full member list"))
+{
+    <form asp-controller="Rookies" asp-action="AgeFilter">
+        <p>
+            <label>Age filter: <input type="text" name="year" /></label>
+            <label>
+                Type:
+                <input type="radio" name="compare" value="equal" /><label for="equal">Equal</label>
+                <input type="radio" name="compare" value="higher" /><label for="higher">Higher</label>
+                <input type="radio" name="compare" value="lower" /><label for="lower">Lower</label>
+            </label>
+            <input type="submit" value="Filter" />
+        </p>
+    </form>
+    <a asp-controller="Rookies" asp-action="Excel">Download excel file</a>
+    <a asp-controller="Rookies" asp-action="Create">Create new member</a>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Birthday</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Birth Place</th>
+            <th scope="col">Graduated</th>
+            <th scope="col">Functions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th><a asp-action="GetDetails" asp-route-personId="@item.Id">@Html.DisplayFor(modelItem => item.FirstName)</a></th>
+                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Gender)</td>
+                <td>@Html.DisplayFor(modelItem => item.Birthday)</td>
+                <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.BirthPlace)</td>
+                <td>@Html.DisplayFor(modelItem => item.IsGraduated)</td>
+                <td>
+                    <a asp-controller="Rookies" asp-action="Edit" asp-route-personId="@item.Id">Edit</a>
+                </td>
+            </tr>
+        }
+        @if (Model.Count() == 0)
+        {
+            <tr>
+                <th>No member in list</th>
+            </tr>
+        }
+    </tbody>
+</table>
