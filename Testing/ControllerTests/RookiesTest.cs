@@ -1,11 +1,10 @@
 using Business;
 using DataAccess;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using mvc_part1.Controllers;
 
-namespace Testing
+namespace Testing.ControllerTests
 {
     public class Tests
     {
@@ -49,7 +48,7 @@ namespace Testing
         [Test]
         public void FullNameActionTest()
         {
-            var result = _controller.Male();
+            var result = _controller.FullName();
             Assert.That(result, Is.TypeOf(typeof(ViewResult)), "Wrong type");
         }
 
@@ -118,31 +117,87 @@ namespace Testing
             Assert.That(result, Is.TypeOf(typeof(ViewResult)), "Wrong type");
         }
 
-        [TestCase()]
+        [TestCase("1", "Lam", "Tran", GenderType.Male, "23/2/2003", "0123456789", "Ha Noi", true)]
         public void CreatePersonActionTest(
             string id,
             string firstName,
             string lastName,
             GenderType gender,
-            DateOnly birthday,
+            string birthday,
             string phoneNumber,
             string birthPlace,
-            bool isGraduated)
+            bool isGraduated
+            )
         {
             var fakePerson = new RequestPerson
             {
-                Id = "1",
-                FirstName = "John",
-                LastName = "Doe",
-                Gender = GenderType.Male,
-                Birthday = new DateOnly(1990, 1, 1),
-                PhoneNumber = "1234567890",
-                BirthPlace = "New York",
-                IsGraduated = true
+                Id = id,
+                FirstName = firstName,
+                LastName = lastName,
+                Gender = gender,
+                Birthday = DateOnly.Parse(birthday),
+                PhoneNumber = phoneNumber,
+                BirthPlace = birthPlace,
+                IsGraduated = isGraduated
             };
             var result = _controller.CreatePerson(fakePerson);
             Assert.That(result, Is.TypeOf(typeof(RedirectToActionResult)), "Wrong type");
             Assert.That(((RedirectToActionResult)result).ActionName.ToLower(), Is.EqualTo("getdetails"), "Wrong action");
+        }
+
+        [TestCase("12345")]
+        public void EditActionTest(string personId)
+        {
+            var result = _controller.Edit(personId);
+            Assert.That(result, Is.TypeOf(typeof(NotFoundResult)), "Wrong type");
+        }
+
+        [TestCase("1", "Lam", "Tran", GenderType.Male, "23/2/2003", "0123456789", "Ha Noi", true)]
+        public void EditPersonActionTest(
+            string id,
+            string firstName,
+            string lastName,
+            GenderType gender,
+            string birthday,
+            string phoneNumber,
+            string birthPlace,
+            bool isGraduated
+            )
+        {
+            var fakePerson = new RequestPerson
+            {
+                Id = id,
+                FirstName = firstName,
+                LastName = lastName,
+                Gender = gender,
+                Birthday = DateOnly.Parse(birthday),
+                PhoneNumber = phoneNumber,
+                BirthPlace = birthPlace,
+                IsGraduated = isGraduated
+            };
+            var result = _controller.EditPerson(fakePerson);
+            Assert.That(result, Is.TypeOf(typeof(NotFoundResult)), "Wrong type");
+        }
+
+        [TestCase("12345")]
+        public void DeleteActionTest(string id)
+        {
+            var result = _controller.Delete(id);
+            Assert.That(result, Is.TypeOf(typeof(NotFoundResult)), "Wrong type");
+        }
+
+        [TestCase(true, "Lam")]
+        public void DeleteConfirmActionTest(bool success, string name)
+        {
+            var result = _controller.DeleteConfirm(success, name);
+            Assert.That(result, Is.TypeOf(typeof(ViewResult)), "Wrong type");
+        }
+
+        [TestCase("Lam")]
+        public void GetDetailsActionTest(string id)
+        {
+            var result = _controller.GetDetails(id);
+            Assert.That(result, Is.TypeOf(typeof(NotFoundResult)), "Wrong type");
         }
     }
 }

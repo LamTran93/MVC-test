@@ -103,7 +103,7 @@ namespace mvc_part1.Controllers
             return BadRequest();
         }
 
-        public IActionResult Edit([FromQuery]string personId)
+        public IActionResult Edit([FromQuery] string personId)
         {
             var foundPerson = _service.Get(personId);
             if (foundPerson == null) return NotFound();
@@ -116,8 +116,15 @@ namespace mvc_part1.Controllers
         {
             if (ModelState.IsValid)
             {
-                var updated = _service.Update(person);
-                return RedirectToAction("GetDetails", new { personId = updated.Id });
+                try
+                {
+                    var updated = _service.Update(person);
+                    return RedirectToAction("GetDetails", new { personId = updated.Id });
+                }
+                catch (Exception ex)
+                {
+                    return NotFound();
+                }
             }
             return BadRequest();
         }
@@ -125,9 +132,16 @@ namespace mvc_part1.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(string id)
         {
-            var deletedPerson = _service.Delete(id);
-            if (deletedPerson != null) return RedirectToAction("DeleteConfirm", new { success = true, name = $"{deletedPerson.FirstName} {deletedPerson.LastName}" });
-            else return RedirectToAction("DeleteConfirm", new { success = false, name = $"{deletedPerson.FirstName} {deletedPerson.LastName}" });
+            try
+            {
+                var deletedPerson = _service.Delete(id);
+                if (deletedPerson != null) return RedirectToAction("DeleteConfirm", new { success = true, name = $"{deletedPerson.FirstName} {deletedPerson.LastName}" });
+                else return RedirectToAction("DeleteConfirm", new { success = false, name = $"{deletedPerson.FirstName} {deletedPerson.LastName}" });
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
 
         public IActionResult DeleteConfirm([FromQuery] bool success, [FromQuery] string name)
@@ -139,9 +153,17 @@ namespace mvc_part1.Controllers
 
         public IActionResult GetDetails([FromQuery] string personId)
         {
-            var foundPerson = _service.Get(personId);
-            if (foundPerson == null) return NotFound();
-            return View("PersonDetails", foundPerson);
+            try
+            {
+                var foundPerson = _service.Get(personId);
+                if (foundPerson == null) return NotFound();
+                return View("PersonDetails", foundPerson);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+
         }
     }
 }
