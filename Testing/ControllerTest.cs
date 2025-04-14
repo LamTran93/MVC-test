@@ -118,6 +118,31 @@ namespace Testing
             Assert.That(result, Is.TypeOf(typeof(ViewResult)), "Wrong type");
         }
 
-        [TestCaseSource(_dao,)]
+        [TestCase()]
+        public void CreatePersonActionTest(
+            string id,
+            string firstName,
+            string lastName,
+            GenderType gender,
+            DateOnly birthday,
+            string phoneNumber,
+            string birthPlace,
+            bool isGraduated)
+        {
+            var fakePerson = new RequestPerson
+            {
+                Id = "1",
+                FirstName = "John",
+                LastName = "Doe",
+                Gender = GenderType.Male,
+                Birthday = new DateOnly(1990, 1, 1),
+                PhoneNumber = "1234567890",
+                BirthPlace = "New York",
+                IsGraduated = true
+            };
+            var result = _controller.CreatePerson(fakePerson);
+            Assert.That(result, Is.TypeOf(typeof(RedirectToActionResult)), "Wrong type");
+            Assert.That(((RedirectToActionResult)result).ActionName.ToLower(), Is.EqualTo("getdetails"), "Wrong action");
+        }
     }
 }
